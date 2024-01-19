@@ -43,9 +43,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## ⚙️ Configuration <a name="configuration"></a>
 ```bash
-software and dependencies to install before running the project
-```
 go install github.com/cosmtrek/air@latest
+```
+
 
 
 ## ⬇️ Installation <a name="installation"></a>
