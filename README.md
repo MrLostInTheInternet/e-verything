@@ -55,6 +55,13 @@ cd e-verything/
 air init
 air
 ```
+Of course you will need to configure a database, I personally used MySQL,<br/>
+create then the .env file with:
+```bash
+DB_URL="connection string"
+PORT=1234
+JWT_SECRET="jwt secret key"
+```
 
 ## 🎈 Usage <a name="usage"></a>
 ```bash
