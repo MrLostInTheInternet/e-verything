@@ -1,0 +1,39 @@
+{{ define "productRow" }}
+<tr hx-target="this" hx-swap="outerHTML" class="text-left align-middle">
+    <td class="p-4">
+        <img src="{{.Product.ImageUrl}}" alt="Product Image" class="w-[20rem] rounded-full">
+    </td>
+    <td class="p-4">{{.Product.Sku}}</td>
+    <td class="p-4">{{.Product.Name}}</td>
+    <td class="p-4">{{.Product.Description}}</td>
+    <td class="p-4">{{.Product.UnitPrice}}$</td>
+    <td class="p-4">{{if .Active}}Yes{{else}}No{{end}}</td>
+    <td class="p-4">{{.Product.UnitsInStock}}</td>
+    <td class="p-4">{{.Product.DateCreated}}</td>
+    <td class="p-4">{{.Product.LastUpdated}}</td>
+    <td class="p-4">{{.Product.CategoryID}}</td>
+    <td class="p-4">{{.Product.ProductCategory.CategoryName}}</td>
+    <td class="p-4">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                hx-get="/edit/{{.Product.ID}}"
+                hx-trigger="edit"
+                onClick="let editing = document.querySelector('.editing')
+							if(editing) {
+							Swal.fire({title: 'Already Editing',
+										showCancelButton: true,
+										confirmButtonText: 'Yep, Edit This Row!',
+										text:'Hey!  You are already editing a row!  Do you want to cancel that edit and continue?'})
+							.then((result) => {
+									if(result.isConfirmed) {
+									htmx.trigger(editing, 'cancel')
+									}
+									htmx.trigger(this, 'edit')
+								})
+							} else {
+								htmx.trigger(this, 'edit')
+							}">
+            Edit
+        </button>
+    </td>
+</tr>
+{{end}}

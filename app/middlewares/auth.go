@@ -16,33 +16,39 @@ var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 // Authmiddlewares handles JWT authentication
 func WithAuth(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		// Get the JWT token from the cookie named "tokenName"
+		// Get the JWT token from the cookie named "Authorization"
 		cookie, err := c.Cookie("Authorization")
 		if err != nil {
 			if err == http.ErrNoCookie {
-				// If the cookie is not set, return an unauthorized status
-				return c.String(http.StatusUnauthorized, "No token cookie found")
+				// If the cookie is not set, redirect to the login page
+				return c.Redirect(http.StatusFound, "/login")
 			}
-			// For any other type of error, return a bad request status
-			return c.String(http.StatusBadRequest, "Error retrieving cookie")
+			// For any other type of error, redirect to the login page
+			return c.Redirect(http.StatusFound, "/login")
 		}
+
 		// Extract the token from the cookie
 		tokenString := cookie.Value
 		if tokenString == "" {
-			return c.String(http.StatusUnauthorized, "Can't get token from cookie")
+			return c.Redirect(http.StatusFound, "/login")
 		}
+
 		token, err := verifyJWTToken(tokenString)
 		if err != nil {
-			return c.String(http.StatusUnauthorized, "Token is not valid")
+			return c.Redirect(http.StatusFound, "/login")
 		}
+
 		claims := token.Claims.(jwt.MapClaims)
 		username := claims["username"]
+
 		// Verify token expiration
 		if err := verifyTokenExpiration(token); err != nil {
-			return c.String(http.StatusUnauthorized, "Token has expired")
+			return c.Redirect(http.StatusFound, "/login")
 		}
-		// You can set the userID in the context for later use in your handlers
+
+		// You can set the username in the context for later use in your handlers
 		c.Set("username", username)
+
 		return next(c)
 	}
 }
@@ -67,9 +73,11 @@ func verifyJWTToken(tokenString string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return []byte(jwtSecret), nil
 	})
+
 	if err != nil {
 		return nil, err
 	}
+
 	return token, nil
 }
 
@@ -78,8 +86,10 @@ func verifyTokenExpiration(token *jwt.Token) error {
 	claims := token.Claims.(jwt.MapClaims)
 	expirationTime := int64(claims["exp"].(float64))
 	currentTime := time.Now().Unix()
+
 	if currentTime > expirationTime {
 		return jwt.ValidationError{Inner: errors.New("token has expired")}
 	}
+
 	return nil
 }

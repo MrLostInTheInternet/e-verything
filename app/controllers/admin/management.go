@@ -1,4 +1,4 @@
-package controllers
+package admin
 
 import (
 	"net/http"
@@ -8,10 +8,6 @@ import (
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 )
-
-type PageData struct {
-	Username string
-}
 
 func ManagementGET(c echo.Context) error {
 	username := c.Get("username")

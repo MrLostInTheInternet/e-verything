@@ -1,0 +1,48 @@
+{{ define "productEdit" }}
+<tr class="editing bg-gray-100 align-middle" hx-trigger="cancel" hx-target="this" hx-swap="outerHTML" hx-get="/api/products/{{.Product.ID}}">
+    <td class="px-1 py-4 border-b border-gray-200 bg-white text-sm">
+        <input type='text' class='form-input rounded-md w-full px-3 py-1.5' name='ImageUrl' value='{{.Product.ImageUrl}}'>
+    </td>
+    <td class="px-1 py-4 border-b border-gray-200 bg-white text-sm">
+        <input type='text' class='form-input rounded-md w-full px-3 py-1.5' name='Sku' value='{{.Product.Sku}}'>
+    </td>
+    <td class="px-1 py-4 border-b border-gray-200 bg-white text-sm">
+        <input type='text' class='form-input rounded-md w-full px-3 py-1.5' name='Name' value='{{.Product.Name}}'>
+    </td>
+    <td class="px-1 py-4 border-b border-gray-200 bg-white text-sm">
+        <textarea class='form-textarea rounded-md w-full h-32 px-3 py-1.5' name='Description'>{{.Product.Description}}</textarea>
+    </td>
+    <td class="px-1 py-4 border-b border-gray-200 bg-white text-sm">
+        <input type='number' class='form-input rounded-md w-full px-3 py-1.5' name='UnitPrice' value='{{.Product.UnitPrice}}'>
+    </td>
+    <td class="px-1 py-4 border-b border-gray-200 bg-white text-sm">
+        <select class='form-select rounded-md w-full px-7 py-1.5' name='active'">
+            <option value='true' {{if .Product.Active}}selected{{end}}>Yes</option>
+            <option value='false' {{if not .Product.Active}}selected{{end}}>No</option>
+        </select>
+    </td>
+    <td class="px-1 py-4 border-b border-gray-200 bg-white text-sm">
+        <input type='number' class='form-input rounded-md w-full px-3 py-1.5' name='UnitsInStock' value='{{.Product.UnitsInStock}}'>
+    </td>
+    <td class="px-1 py-4 border-b border-gray-200 bg-white text-sm">---</td>
+    <td class="px-1 py-4 border-b border-gray-200 bg-white text-sm">---</td>
+    <td class="px-1 py-4 border-b border-gray-200 bg-white text-sm">
+        <input type='number' class='form-input rounded-md w-full px-3 py-1.5' name='CategoryID' value='{{.Product.CategoryID}}'>
+    </td>
+    <td class="px-1 py-4 border-b border-gray-200 bg-white text-sm">
+        <input type='text' class='form-input rounded-md w-full px-3 py-1.5' name='CategoryName' value='{{.Product.ProductCategory.CategoryName}}' readonly>
+    </td>
+    <td class="px-1 py-4 border-b border-gray-200 bg-white text-sm">
+        <div class="flex space-x-2 justify-start">
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    hx-get="/api/products/{{.Product.ID}}">
+                Cancel
+            </button>
+            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    hx-put="/api/products/{{.Product.ID}}" hx-include="closest tr">
+                Save
+            </button>
+        </div>
+    </td>
+</tr>
+{{ end }}

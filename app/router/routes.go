@@ -1,33 +1,50 @@
 package router
 
 import (
-	"webapp/app/controllers"
+	"webapp/app/controllers/admin"
+	"webapp/app/controllers/authentication"
+	"webapp/app/controllers/shop"
 	"webapp/app/middlewares"
 
 	"github.com/labstack/echo/v4"
 )
 
 func Routes(e *echo.Echo) {
-	// management endpoint
-	e.GET("/management", controllers.ManagementGET, middlewares.WithAuth)
+	// Management endpoint
+	e.GET("/management", admin.ManagementGET, middlewares.WithAuth)
 
 	// Signup and Login endpoints
-	e.GET("/signup", controllers.SignupGET)
-	e.POST("/signup", controllers.SignupPOST)
-	e.GET("/login", controllers.LoginGET)
-	e.POST("/login", controllers.LoginPOST)
+	e.GET("/signup", authentication.SignupGET)
+	e.POST("/signup", authentication.SignupPOST)
+	e.GET("/login", authentication.LoginGET)
+	e.POST("/login", authentication.LoginPOST)
 
 	// Logout endpoint
-	e.POST("/logout", controllers.LogoutPOST, middlewares.WithAuth)
+	e.POST("/logout", authentication.LogoutPOST, middlewares.WithAuth)
 
-	// products endpoints
-	e.GET("/api/products", controllers.GetAllProducts, middlewares.WithAuth)
-	e.GET("/api/products/:id", controllers.GetProductByID, middlewares.WithAuth)
-	e.PUT("/api/products/:id", controllers.UpdateProductByID, middlewares.WithAuth)
-	e.GET("/api/products/:id/edit", controllers.GetProductToEdit, middlewares.WithAuth)
-	e.POST("/api/products", controllers.CreateProduct, middlewares.WithAuth)
-	e.DELETE("/api/products/:id", controllers.DeleteProductByID, middlewares.WithAuth)
+	// Products endpoints
 
-	// category endpoints
-	e.GET("/api/products/c/:id", controllers.SortByCategoryID, middlewares.WithAuth)
+	// Get all products
+	e.GET("/api/products", shop.GetAllProducts, middlewares.WithAuth)
+	// Get product by id
+	e.GET("/api/products/:id", shop.GetProductByID, middlewares.WithAuth)
+	// Update product by id
+	e.PUT("/api/products/:id", shop.UpdateProductByID, middlewares.WithAuth)
+	// Get product by id to edit in table row
+	e.GET("/edit/:id", admin.GetProductToEdit, middlewares.WithAuth)
+	// Add new product
+	e.POST("/api/products", shop.CreateProduct, middlewares.WithAuth)
+	// Delete product by id
+	e.DELETE("/api/products/:id", shop.DeleteProductByID, middlewares.WithAuth)
+
+	// Category endpoints
+	e.GET("/api/products/c/:id", shop.SortByCategoryID, middlewares.WithAuth)
+
+	// Dashboard
+	e.GET("/dashboard", shop.DashboardGET, middlewares.WithAuth)
+	e.GET("/search", shop.SearchHandler, middlewares.WithAuth)
+	// e.GET("/sort", shop.SortHandler, middlewares.WithAuth)
+	// Product details
+	e.GET("/details/:id", shop.GetProductDetails, middlewares.WithAuth)
+	e.GET("/products", shop.GetListProducts, middlewares.WithAuth)
 }

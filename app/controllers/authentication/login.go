@@ -1,4 +1,4 @@
-package controllers
+package authentication
 
 import (
 	"net/http"
@@ -50,6 +50,7 @@ func LoginPOST(c echo.Context) (err error) {
 	cookie.HttpOnly = true
 	cookie.Expires = time.Now().Add(time.Hour * 24 * 30) // Token expires in 1 month
 	c.SetCookie(cookie)
+
 	if c.Request().Header.Get("HX-Request") != "" {
 		// It's an HTMX request, instruct the browser to redirect
 		return c.HTML(http.StatusOK, `<script>window.location.href = "/management";</script>`)
