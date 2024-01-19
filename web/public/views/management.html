@@ -1,0 +1,66 @@
+{{ define "management" }}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    </link>
+    <script src="/public/scripts/htmx.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="min-h-screen flex flex-col bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow mb-4">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a class="font-semibold text-xl tracking-tight" href="#">E-verything</a>
+            <!-- Add navbar items here if needed -->
+        </div>
+    </nav>
+
+    <!-- Management Content -->
+    <div class="container mx-auto px-6">
+        <div class="flex justify-between items-center mb-4">
+            <h1 class="text-2xl font-semibold">Welcome to the management, {{ .Username }}</h1>
+            <form action="/logout" method="post">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Logout</button>
+            </form>
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg text-xs">
+            <table class="min-w-full leading-normal text-center">
+                <thead class="whitespace-nowrap">
+                    <tr>
+                        <th class="px-2">Image</th>
+                        <th class="px-2">Sku</th>
+                        <th class="px-2">Name</th>
+                        <th class="px-2">Description</th>
+                        <th class="px-2">Price</th>
+                        <th class="px-2">Active</th>
+                        <th class="px-2">In Stock</th>
+                        <th class="px-2">Created</th>
+                        <th class="px-2">Last update</th>
+                        <th class="px-2">Category ID</th>
+                        <th class="px-2">Category Name</th>
+                    </tr>
+                </thead>
+                <tbody id="products-table" hx-get="/api/products" hx-trigger="load" class="text-sm">
+                    <!-- Table Body -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white text-center text-black mt-4">
+        <div class="text-center p-3 shadow">
+            <span>© {{ .Date }} E-verything</span>
+        </div>
+    </footer>
+</body>
+
+</html>
+{{ end }}
