@@ -80,7 +80,7 @@ air
 # 🎉 Acknowledgements <a name = "acknowledgement"></a>
 - Inspiration: go + htmx
 - References: air, go, htmx
-
+- Thanks to luv3code for the images of the products.
 
 <p align="center">
 <br>
